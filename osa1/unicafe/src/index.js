@@ -16,7 +16,7 @@ const Button = ({ onClick, text }) => (
 const Statistics = (props) => {
   const feedbacks = [props.good, props.neutral, props.bad]
   const total = feedbacks[0] + feedbacks[1] + feedbacks[2]
-  const average = total / 3
+  const average = (feedbacks[0] + (feedbacks[2] * -1)) / total
   const positives = feedbacks[0] / total * 100
 
   return (

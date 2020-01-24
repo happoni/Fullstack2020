@@ -13,6 +13,12 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
+const StatisticLine = ({ text, value, endtext }) => (  
+  <div>
+    <p>{text} {value} {endtext}</p>
+  </div>
+)
+
 const Statistics = (props) => {
   const feedbacks = [props.good, props.neutral, props.bad]
   const total = feedbacks[0] + feedbacks[1] + feedbacks[2]
@@ -28,14 +34,13 @@ const Statistics = (props) => {
   }
 
   return (
-  <div>
-    <p>Good: {feedbacks[0]}</p>
-    <p>Neutral: {feedbacks[1]}</p>
-    <p>Bad: {feedbacks[2] }</p>
-    <p>All: {total}</p>
-    <p>Average: {average}</p>
-    <p>Positive: {positives} %</p>
-  </div>
+    <div>
+      <StatisticLine text="Good: " value={feedbacks[0]} endtext="" />
+      <StatisticLine text="Neutral: " value={feedbacks[1]} endtext="" />
+      <StatisticLine text="Bad: " value={feedbacks[2]} endtext="" />
+      <StatisticLine text="Average: " value={average} endtext="" />
+      <StatisticLine text="Good: " value={positives} endtext=" %" /> 
+    </div>
   )
 }
 

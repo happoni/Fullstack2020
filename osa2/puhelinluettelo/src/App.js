@@ -8,6 +8,7 @@ const App = (props) => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newPerson, setNewPerson] = useState('')
+  const [searchCondition, setSearchCondition] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -24,20 +25,39 @@ const App = (props) => {
     }
   }
 
+
   const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
   }
-
 
   const handleNumberChange = (event) => {
     console.log(event.target.value)
     setNewNumber(event.target.value)
   }
 
+  const personsToShow = persons.filter(person =>
+     (person.name.includes(searchCondition)))  
+
+  const handleSearchChange = (event) => {
+    setSearchCondition(event.target.value)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        <form onSubmit={handleSearchChange}>
+          Filter:
+          <input
+            value={searchCondition}
+            onChange={handleSearchChange}
+          />          
+        </form>
+      </div>
+      <br></br>
+      <div>
+        <h2>Add a new person</h2>
       <form onSubmit={addPerson}>
         <div>
           name: 
@@ -56,14 +76,14 @@ const App = (props) => {
           <button type="submit">add</button>
         </div>
       </form>
+      </div>
       <h2>Numbers</h2>
         <ul>
-          {persons.map(person =>
+          {personsToShow.map(person =>
           <Person key={person.name} person={person} />)}
         </ul>
     </div>
   )
-
 }
 
 export default App

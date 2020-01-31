@@ -6,14 +6,14 @@ const Course = ({course}) => {
 
   const Header = () => {
     return (
-        <div>
-            <h1>{course.name}</h1>
+        <div>            
+            <h2>{course.name}</h2>
         </div>
     )
   }
 
-  const Content = () => {    
-    
+  const Content = () => {      
+
     return (
       <div>
         {course.parts.map(part =>
@@ -47,7 +47,7 @@ const Course = ({course}) => {
   }
 
   return (
-    <div>
+    <div>      
     <Header />
     <Content />
     <Total />
@@ -56,7 +56,8 @@ const Course = ({course}) => {
 }
 
 const App = () => {
-    const course = {
+  const course = [
+    {
       name: "Half Stack application development",
       id: 1,
       parts: [
@@ -81,11 +82,31 @@ const App = () => {
          id: 4
        }
       ]
+    },
+    {
+      name: 'Node.js',
+      id: 2,
+      parts:[
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
     }
-
+  ]
     return (
         <div>
+          <h1>Web development curriculum</h1>
+          {course.map(course =>
           <Course course={course} />
+          )}          
+           
         </div>
     )
 }

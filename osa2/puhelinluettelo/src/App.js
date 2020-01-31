@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import Person from './components/Person'
-
-
+import Persons from './components/Persons'
+import Filter from './components/Filter'
 
 const App = (props) => {
   const [persons, setPersons] = useState(props.persons) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [newPerson, setNewPerson] = useState('')
   const [searchCondition, setSearchCondition] = useState('')
 
   const addPerson = (event) => {
@@ -21,10 +19,10 @@ const App = (props) => {
       window.alert(`${newName} is already in phonebook`)
     } else {
       setPersons(persons.concat(personObject))
-      setNewPerson('')
+      setNewName('')
+      setNewNumber('')
     }
   }
-
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -47,13 +45,7 @@ const App = (props) => {
     <div>
       <h2>Phonebook</h2>
       <div>
-        <form onSubmit={handleSearchChange}>
-          Filter:
-          <input
-            value={searchCondition}
-            onChange={handleSearchChange}
-          />          
-        </form>
+        {<Filter searchCondition={searchCondition} handleSearchChange={handleSearchChange} />}
       </div>
       <br></br>
       <div>
@@ -79,8 +71,7 @@ const App = (props) => {
       </div>
       <h2>Numbers</h2>
         <ul>
-          {personsToShow.map(person =>
-          <Person key={person.name} person={person} />)}
+          {<Persons personsToShow={personsToShow} />}          
         </ul>
     </div>
   )

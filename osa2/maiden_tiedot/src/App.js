@@ -13,12 +13,22 @@ const Filter = ({handleSearchChange, searchCondition}) => {
   )
 }
 
-const Country = ({ country }) => {
+const Country = ({ country, handleClick }) => {
   return (
-    <li>{country.name}</li>
+    <div>
+      <li>{country.name}</li>
+      <Button onClick={handleClick} id={country.name} />
+    </div>
   )
 }
 
+const Button = ({ onClick, id }) => {
+  return (    
+    <button onClick={onClick} id={id}>
+      Show
+    </button>
+  )
+}
 
 const DetailedCountry = ({ country }) => {
   return (
@@ -32,15 +42,15 @@ const DetailedCountry = ({ country }) => {
         </p>
       <h3>Languages</h3>
         <ul>
-          {country.languages.map(language =>
-            <li>{language.name}</li>)}
+          {country.languages.map(language => 
+            <li key={language.name}>{language.name}</li>)}
         </ul>
         <img src={country.flag} alt='flag' height="64" width="64" /> 
     </div>
   )
 }
 
-const Countries = ({ countriesToShow }) => {
+const Countries = ({ countriesToShow, handleClick }) => {
   if (countriesToShow.length > 10) {
     return (
       <div>
@@ -57,7 +67,8 @@ const Countries = ({ countriesToShow }) => {
   } else {
     return (    
       countriesToShow.map(country =>
-        <Country key={country.name} country={country} />)
+        <Country key={country.name} country={country} 
+          handleClick={handleClick} />)
     )
   }
 }
@@ -74,13 +85,16 @@ const App = () => {
       })
   }, [])
 
+  const handleClick = (event) => {    
+    setSearchCondition(event.target.value)
+  }
+  
   const handleSearchChange = (event) => {
     setSearchCondition(event.target.value)
   }
   
   const countriesToShow = countries.filter(country =>
     (country.name.includes(searchCondition)))
-  
   
   return (
     <div>
@@ -91,7 +105,8 @@ const App = () => {
       </div>
       <div>
         <ul>
-          {<Countries countriesToShow={countriesToShow} />}
+          {<Countries countriesToShow={countriesToShow} 
+            handleClick={handleClick} />}            
         </ul>
       </div>
     </div>

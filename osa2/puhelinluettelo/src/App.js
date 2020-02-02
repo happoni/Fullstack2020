@@ -3,6 +3,7 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import personService from './services/persons'
 import Notification from './components/Notification'
+import Error from './components/Error'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -10,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchCondition, setSearchCondition] = useState('')
   const [infoMessage, setInfoMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -35,13 +37,21 @@ const App = () => {
             setPersons(persons.map(person => person.id !== p.id ? person : returnedPerson))
             setNewName('')
             setNewNumber('')
+            setInfoMessage(
+            `Person ${newName} updated succesfully.`
+            )
+            setTimeout(() => {
+            setInfoMessage(null)
+            }, 5000)
           })
-        setInfoMessage(
-          `Person ${newName} updated succesfully.`
-        )
-        setTimeout(() => {
-          setInfoMessage(null)
-        }, 5000)
+          .catch(error => {
+            setErrorMessage(
+              `Person ${newName} was already deleted from server.`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+          })
       }
     } else {
       personService
@@ -97,6 +107,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={infoMessage} />
+      <Error message={errorMessage} />
       <div>
         {<Filter searchCondition={searchCondition} handleSearchChange={handleSearchChange} />}
       </div>

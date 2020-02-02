@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchCondition, setSearchCondition] = useState('')
+  const [infoMessage, setInfoMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -35,6 +36,12 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
+        setInfoMessage(
+          `Person ${newName} updated succesfully.`
+        )
+        setTimeout(() => {
+          setInfoMessage(null)
+        }, 5000)
       }
     } else {
       personService
@@ -44,6 +51,12 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+        setInfoMessage(
+          `Person ${newName} added succesfully.`
+        )
+        setTimeout(() => {
+          setInfoMessage(null)
+        }, 5000)
     }
   }
 
@@ -52,13 +65,15 @@ const App = () => {
       personService
       .remove(id)
       .then(initialPersons => {
-          setPersons(initialPersons)
+          setPersons(persons.filter(p => p.id !== id))
       })
+      setInfoMessage(
+        `Person removed succesfully.`
+        )
+        setTimeout(() => {
+        setInfoMessage(null)
+        }, 5000)
     }   
-  }
-
-  const updatePerson = (id) => {
-
   }
 
   const handleNameChange = (event) => {
@@ -81,6 +96,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={infoMessage} />
       <div>
         {<Filter searchCondition={searchCondition} handleSearchChange={handleSearchChange} />}
       </div>

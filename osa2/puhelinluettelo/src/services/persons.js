@@ -2,8 +2,7 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3001/Persons'
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  
+  const request = axios.get(baseUrl)  
   return request.then(response => response.data)
 }
 
@@ -18,7 +17,7 @@ const update = (id, newObject) => {
 }
 
 const remove = (id) => {
-  const request = axios.delete(`${baseUrl}/${id}`)
+  axios.delete(`${baseUrl}/${id}`)
   const returnAll = axios.get(baseUrl)
   return returnAll.then(response => response.data)
 }

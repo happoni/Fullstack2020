@@ -35,8 +35,18 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+    }
   }
-}
+
+  const removePerson = (id) => {    
+    if (window.confirm(`Are you sure?`)) {
+      personService
+      .remove(id)
+      .then(initialPersons => {
+          setPersons(initialPersons)
+      })
+    }   
+  }
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -85,7 +95,7 @@ const App = () => {
       </div>
       <h2>Numbers</h2>
         <ul>
-          {<Persons personsToShow={personsToShow} />}          
+          {<Persons personsToShow={personsToShow} removePerson={removePerson}/>}          
         </ul>
     </div>
   )

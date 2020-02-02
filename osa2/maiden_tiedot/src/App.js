@@ -86,7 +86,7 @@ const App = () => {
   }, [])
 
   const handleClick = (event) => {    
-    setSearchCondition(event.target.value)
+    setSearchCondition(event.target.id)
   }
   
   const handleSearchChange = (event) => {

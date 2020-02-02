@@ -30,8 +30,21 @@ const Button = ({ onClick, id }) => {
   )
 }
 
-const DetailedCountry = ({ country }) => {
-  return (
+const DetailedCountry = ({ country }) => {    
+  const api_key = process.env.REACT_APP_API_KEY;  
+  const params = {
+    access_key: api_key,
+    query: country.name
+  }  
+  
+  axios
+      .get('http://api.weatherstack.com/current', {params})
+      .then(response => {    
+        const weather = response.data
+        console.log(weather.current.temperature)    
+    })  
+
+  return (    
     <div>
       <h2>{country.name}</h2>
         <p>
@@ -46,9 +59,18 @@ const DetailedCountry = ({ country }) => {
             <li key={language.name}>{language.name}</li>)}
         </ul>
         <img src={country.flag} alt='flag' height="64" width="64" /> 
+      <div>
+        <h4>
+          Weather in {country.name}          
+        </h4>
+        <p>           
+          Temperature:
+        </p>
+      </div>
     </div>
   )
 }
+
 
 const Countries = ({ countriesToShow, handleClick }) => {
   if (countriesToShow.length > 10) {
@@ -83,7 +105,7 @@ const App = () => {
       .then(response => {
         setCountries(response.data)
       })
-  }, [])
+  }, []) 
 
   const handleClick = (event) => {    
     setSearchCondition(event.target.id)
@@ -106,7 +128,7 @@ const App = () => {
       <div>
         <ul>
           {<Countries countriesToShow={countriesToShow} 
-            handleClick={handleClick} />}            
+            handleClick={handleClick} />}
         </ul>
       </div>
     </div>

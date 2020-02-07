@@ -55,6 +55,9 @@ const App = () => {
       }
     } else if (!newName|| !newNumber) {
       setErrorMessage('Person must have name and number!')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     } else {
       personService
         .create(personObject)

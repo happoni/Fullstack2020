@@ -53,6 +53,8 @@ const App = () => {
             }, 5000)
           })
       }
+    } else if (!newName|| !newNumber) {
+      setErrorMessage('Person must have name and number!')
     } else {
       personService
         .create(personObject)

@@ -66,9 +66,12 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
-        setInfoMessage(
-          `Person ${newName} added succesfully.`
-        )
+        .catch(error => {
+          setErrorMessage(error.response.data.error)
+        })        
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setTimeout(() => {
           setInfoMessage(null)
         }, 5000)

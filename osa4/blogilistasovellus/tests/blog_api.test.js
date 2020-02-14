@@ -32,6 +32,26 @@ describe('blogs have correct format in', () => {
   })
 })
 
+describe('adding blogs', () => {
+  test('is possible', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.singleBlog)
+      .expect(200)
+      .expect('Content-type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
+
+    const titles = blogsAtEnd.map(b => b.title)
+    expect(titles).toContain(
+      'How to add blogs'
+    )
+  })
+})
+
+
+
 afterAll(() => {
   mongoose.connection.close()
 })

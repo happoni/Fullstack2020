@@ -21,8 +21,14 @@ describe('basic api returns', () => {
 
   test('correct number of blogs', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body.length).toBe(helper.initialBlogs.length)
+  })
+})
+
+describe('blogs have correct format in', () => {
+  test('field id', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
   })
 })
 

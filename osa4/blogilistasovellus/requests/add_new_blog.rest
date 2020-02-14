@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Eka blogini",
+  "title": "Toka blogini",
   "author": "Haninen",
-  "url": "www.google.com",
-  "likes": 6
+  "url": "www.blogit.com",
+  "likes": 3
   }

@@ -48,6 +48,18 @@ describe('adding blogs', () => {
       'How to add blogs'
     )
   })
+
+  test('without likes will set likes to zero', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.singleBlogWithoutLikes)
+      .expect(200)
+      .expect('Content-type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    const likes = blogsAtEnd.map(b => b.likes)
+    expect(likes[blogsAtEnd.length - 1]).toBe(0)
+  })
 })
 
 

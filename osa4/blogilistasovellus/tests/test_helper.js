@@ -54,6 +54,12 @@ const singleBlogWithoutLikes =
     url: "nolikes.io"
   }
 
+const singleBlogWithoutTitleOrAuthor =
+  {
+    url: "www.noname.com",
+    likes: 0
+  }
+
 const nonExistingId = async () => {
   const blog = new Blog({ title: "Poistouhan alla", author: "Hanihani", url: "www.fi", likes: 0 })
   await blog.save()
@@ -68,5 +74,5 @@ const blogsInDB = async () => {
 }
 
 module.exports = {
-  initialBlogs, singleBlog, singleBlogWithoutLikes, nonExistingId, blogsInDB
+  initialBlogs, singleBlog, singleBlogWithoutLikes, singleBlogWithoutTitleOrAuthor, nonExistingId, blogsInDB
 }

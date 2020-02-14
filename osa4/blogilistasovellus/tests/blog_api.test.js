@@ -60,6 +60,13 @@ describe('adding blogs', () => {
     const likes = blogsAtEnd.map(b => b.likes)
     expect(likes[blogsAtEnd.length - 1]).toBe(0)
   })
+
+  test('without title or author will return bad request', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.singleBlogWithoutTitleOrAuthor)
+      .expect(400)
+  })
 })
 
 

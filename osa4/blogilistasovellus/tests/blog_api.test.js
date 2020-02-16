@@ -81,6 +81,20 @@ describe('editing database', () => {
     const blogsAtEnd = await helper.blogsInDB()
     expect(blogsAtEnd.length).toBe(5)
   })
+
+  test('by updating likes of blog returns new amount of likes', async () => {
+    const blogs = await helper.blogsInDB()
+    const firstId = blogs[0].id
+
+    await api
+      .put(`/api/blogs/${firstId}`)
+      .send(helper.firstBlogLikesUpdated)
+      .expect(200)
+      .expect('Content-type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd[0].likes).toBe(99)
+  })
 })
 
 

@@ -60,6 +60,13 @@ const singleBlogWithoutTitleOrAuthor =
     likes: 0
   }
 
+const firstBlogLikesUpdated = {
+  title: "React patterns",
+  author: "Michael Chan",
+  url: "https://reactpatterns.com/",
+  likes: 99,
+}
+
 const nonExistingId = async () => {
   const blog = new Blog({ title: "Poistouhan alla", author: "Hanihani", url: "www.fi", likes: 0 })
   await blog.save()
@@ -74,5 +81,7 @@ const blogsInDB = async () => {
 }
 
 module.exports = {
-  initialBlogs, singleBlog, singleBlogWithoutLikes, singleBlogWithoutTitleOrAuthor, nonExistingId, blogsInDB
+  initialBlogs, singleBlog,
+  singleBlogWithoutLikes, singleBlogWithoutTitleOrAuthor,
+  firstBlogLikesUpdated, nonExistingId, blogsInDB
 }

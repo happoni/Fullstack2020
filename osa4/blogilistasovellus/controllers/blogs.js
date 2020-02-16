@@ -6,7 +6,33 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs.map(blog => blog.toJSON()))
 })
 
-// tähän id:llä get
+blogsRouter.get('/:id', async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    response.json(blog.toJSON())
+  } else {
+    response.status(404).end()
+  }
+})
+
+blogsRouter.put('/:id', async (request, response, next) => {
+  const body = request.body
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes === undefined ? 0 : body.likes
+  }
+
+  if (blog.title === undefined || blog.author === undefined) {
+    const e = new Error('Title or author missing')
+    e.name = 'ValidationError'
+    throw e
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  response.json(updatedBlog.toJSON())
+})
 
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body

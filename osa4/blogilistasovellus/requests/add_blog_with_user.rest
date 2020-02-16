@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Juuserit",
+  "author": "Hanis",
+  "url": "www.useradds.com",
+  "likes": 66,
+  "userId": "5e494882f2a30d4b7a9f2495"
+}

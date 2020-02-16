@@ -147,6 +147,88 @@ describe('when there is initially one user at db', () => {
     const usersAtEnd = await helper.usersInDB()
     expect(usersAtEnd.length).toBe(usersAtStart.length)
   })
+
+  test('creation fails with proper statuscode and message if username is too short', async () => {
+    const usersAtStart = await helper.usersInDB()
+
+    const newUser = {
+      username: 'ro',
+      name: 'Superuser',
+      password: 'salaisuus',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('too short')
+
+    const usersAtEnd = await helper.usersInDB()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if username is missing', async () => {
+    const usersAtStart = await helper.usersInDB()
+
+    const newUser = {
+      name: 'Superuser',
+      password: 'salaisuus',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('missing')
+
+    const usersAtEnd = await helper.usersInDB()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if password is too short', async () => {
+    const usersAtStart = await helper.usersInDB()
+
+    const newUser = {
+      username: 'robust',
+      name: 'Superuser',
+      password: 's',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('too short')
+
+    const usersAtEnd = await helper.usersInDB()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if password is missing', async () => {
+    const usersAtStart = await helper.usersInDB()
+
+    const newUser = {
+      username: 'roobois',
+      name: 'Superuser',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('missing')
+
+    const usersAtEnd = await helper.usersInDB()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)
+  })
 })
 
 afterAll(() => {

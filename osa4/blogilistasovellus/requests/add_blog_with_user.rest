@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imxhc3UiLCJpZCI6IjVlNDk1MGQ2OTBjODBkNjcwY2FlOWNhOCIsImlhdCI6MTU4MTg2MzczMn0.iz2itCjxUwhd-MlHhW5GDA_oUEYm09l7yQfq1EejKHo
 
 {
-  "title": "Juuserit",
-  "author": "Hanis",
-  "url": "www.useradds.com",
-  "likes": 66,
-  "userId": "5e494882f2a30d4b7a9f2495"
+  "title": "Token-kirjautuminen",
+  "author": "Deedikki",
+  "url": "www.tokensarenice.com",
+  "likes": 31
 }

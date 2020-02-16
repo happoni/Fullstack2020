@@ -10,6 +10,10 @@ const User = require('../models/user')
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
+
+  await User.deleteMany({})
+  const user = helper.rootUser()
+  await user.save()
 })
 
 describe('basic api returns', () => {
@@ -37,6 +41,7 @@ describe('adding blogs', () => {
   test('is possible', async () => {
     await api
       .post('/api/blogs')
+      //.set(`Authorization`, helper.tokenOfUser())
       .send(helper.singleBlog)
       .expect(200)
       .expect('Content-type', /application\/json/)
@@ -99,12 +104,6 @@ describe('editing database', () => {
 })
 
 describe('when there is initially one user at db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
-    const user = new User({ username: 'root', password: 'salainen' })
-    await user.save()
-  })
-
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDB()
 

@@ -86,9 +86,21 @@ const usersInDB = async () => {
   return users.map(user => user.toJSON())
 }
 
+const rootUser = async () => {
+  return new User({ username: 'root', password: 'salainen' })
+}
+
+const tokenOfUser = async () => {
+
+
+  const users = await User.find({})
+  const token = users[0].token
+  return token
+}
+
 module.exports = {
   initialBlogs, singleBlog,
   singleBlogWithoutLikes, singleBlogWithoutTitleOrAuthor,
   firstBlogLikesUpdated, nonExistingId, blogsInDB,
-  usersInDB,
+  usersInDB, tokenOfUser, rootUser,
 }

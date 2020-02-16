@@ -7,13 +7,11 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
+let token
+
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
-
-  await User.deleteMany({})
-  const user = helper.rootUser()
-  await user.save()
 })
 
 describe('basic api returns', () => {
@@ -38,10 +36,23 @@ describe('blogs have correct format in', () => {
 })
 
 describe('adding blogs', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+    const user = new User({ username: 'nalle', password: 'pallo' })
+    await user.save()
+
+    //api
+    //  .post('/api/login')
+    //  .send({ username: "nalle", password: "pallo" })
+    //  .end((err, response) => {
+    //    token = response.body.token
+    //  })
+  })
+
   test('is possible', async () => {
     await api
       .post('/api/blogs')
-      //.set(`Authorization`, helper.tokenOfUser())
+      .set('Authorization', `Bearer ${token}`)
       .send(helper.singleBlog)
       .expect(200)
       .expect('Content-type', /application\/json/)
@@ -104,6 +115,12 @@ describe('editing database', () => {
 })
 
 describe('when there is initially one user at db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+    const user = new User({ username: 'root', password: 'salainen' })
+    await user.save()
+  })
+
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDB()
 

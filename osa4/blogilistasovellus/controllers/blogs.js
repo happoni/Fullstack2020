@@ -18,8 +18,6 @@ blogsRouter.post('/', async (request, response, next) => {
     likes: body.likes === undefined ? 0 : body.likes
   })
 
-
-
   if (blog.title === undefined || blog.author === undefined) {
     const e = new Error('Title or author missing')
     e.name = 'ValidationError'
@@ -28,6 +26,11 @@ blogsRouter.post('/', async (request, response, next) => {
 
   const savedBlog = await blog.save()
   response.json(savedBlog.toJSON())
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+  await Blog.findByIdAndRemove(request.params.id)
+  response.status(204).end()
 })
 
 module.exports = blogsRouter

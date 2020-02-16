@@ -69,6 +69,20 @@ describe('adding blogs', () => {
   })
 })
 
+describe('editing database', () => {
+  test('by removing blog by id removes blog', async () => {
+    const blogs = await helper.blogsInDB()
+    const firstId = blogs[0].id
+
+    await api
+      .delete(`/api/blogs/${firstId}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd.length).toBe(5)
+  })
+})
+
 
 
 afterAll(() => {

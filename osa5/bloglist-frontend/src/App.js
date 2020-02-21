@@ -71,6 +71,14 @@ const App = () => {
     }, 5000)
   }
 
+  const handleRemove = async ({ blog }) => {
+    if (window.confirm(`Really delete blog ${blog.title}?`)) {
+      await blogService.remove(blog.id)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+      setInfoMessage('Blog was deleted')
+    }
+  }
+
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService
@@ -142,8 +150,10 @@ const App = () => {
             Logout
           </button>
         </div>
-        {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        {blogs.sort((a, b) => {
+          return b.likes - a.likes
+        }).map(blog =>
+        <Blog key={blog.id} blog={blog} user={user} handleRemove={handleRemove} />
       )}
         {blogForm()}
     </div>

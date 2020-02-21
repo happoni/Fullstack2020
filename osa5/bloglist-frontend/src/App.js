@@ -51,6 +51,12 @@ const App = () => {
     }
   }
 
+  const handleLogout = (event) => {
+    event.preventDefault()
+    window.localStorage.clear()
+    setUser(null)
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -92,6 +98,9 @@ const App = () => {
       <Notification message={errorMessage} />
         <div>
           <p>{user.name} logged in</p>
+          <button onClick={handleLogout}>
+            Logout
+          </button>
         </div>
         {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />

@@ -22,7 +22,7 @@ const App = () => {
       .getAll()
       .then(initialBlogs => {
         setBlogs(initialBlogs)
-    })  
+      })
   }, [])
 
   useEffect(() => {
@@ -43,14 +43,14 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
 
       blogService.setToken(user.token)
       setUser(user)
       setInfoMessage('Succesfully logged in')
       setTimeout(() => {
         setInfoMessage(null)
-      }, 5000)  
+      }, 5000)
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -84,7 +84,7 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))        
+        setBlogs(blogs.concat(returnedBlog))
         setInfoMessage('Blog added succesfully')
         setTimeout(() => {
           setInfoMessage(null)
@@ -102,7 +102,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -111,7 +111,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -119,7 +119,7 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const blogForm = () => (
@@ -133,8 +133,8 @@ const App = () => {
       <div>
         <h2>Blogs</h2>
         <h3>Please log in</h3>
-          <Error message={errorMessage} />
-          {loginForm()}     
+        <Error message={errorMessage} />
+        {loginForm()}
       </div>
     )
   }
@@ -144,18 +144,18 @@ const App = () => {
       <h2>Blogs</h2>
       <Error message={errorMessage} />
       <Notification message={infoMessage} />
-        <div>
-          <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>
+      <div>
+        <p>{user.name} logged in</p>
+        <button onClick={handleLogout}>
             Logout
-          </button>
-        </div>
-        {blogs.sort((a, b) => {
-          return b.likes - a.likes
-        }).map(blog =>
+        </button>
+      </div>
+      {blogs.sort((a, b) => {
+        return b.likes - a.likes
+      }).map(blog =>
         <Blog key={blog.id} blog={blog} user={user} handleRemove={handleRemove} />
       )}
-        {blogForm()}
+      {blogForm()}
     </div>
   )
 }

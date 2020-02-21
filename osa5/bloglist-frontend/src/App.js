@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Error from './components/Error'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState('')
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
+  const [infoMessage, setInfoMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -45,10 +46,14 @@ const App = () => {
 
       blogService.setToken(user.token)
       setUser(user)
+      setInfoMessage('Succesfully logged in')
+      setTimeout(() => {
+        setInfoMessage(null)
+      }, 5000)  
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong username or password!')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -59,6 +64,10 @@ const App = () => {
     event.preventDefault()
     window.localStorage.clear()
     setUser(null)
+    setInfoMessage('Logged out succesfully')
+    setTimeout(() => {
+      setInfoMessage(null)
+    }, 5000)
   }
 
   const addBlog = (event) => {
@@ -72,12 +81,21 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setNewBlog('')
+        setBlogs(blogs.concat(returnedBlog))        
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+        setInfoMessage('Blog added succesfully')
+        setTimeout(() => {
+          setInfoMessage(null)
+        }, 5000)
       })
+      .catch(error => {
+        setErrorMessage(error.response.data.error)
+      })
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
   }
 
   const loginForm = () => (
@@ -157,7 +175,7 @@ const App = () => {
       <div>
         <h2>Blogs</h2>
         <h3>Please log in</h3>
-          <Notification message={errorMessage} />
+          <Error message={errorMessage} />
           {loginForm()}     
       </div>
     )
@@ -166,7 +184,8 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification message={errorMessage} />
+      <Error message={errorMessage} />
+      <Notification message={infoMessage} />
         <div>
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>

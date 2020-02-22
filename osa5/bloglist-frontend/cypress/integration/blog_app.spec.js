@@ -64,6 +64,19 @@ describe('Blog app', function() {
       cy.contains('Automated blog creating')
         .contains('Likes: 1')        
     })
+
+    it('An own blog can be removed', function() {
+      cy.contains('Automated blog creating')
+        .get('#show-button')
+        .click()
+
+      cy.contains('Automated blog creating')
+        .get('#remove-button')
+        .click()
+
+      cy.contains('Blog was deleted')
+      cy.get('html').should('not.contain', 'Automated blog creating')
+    })
   })
 
 })

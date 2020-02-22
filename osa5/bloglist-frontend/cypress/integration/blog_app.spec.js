@@ -39,4 +39,19 @@ describe('Blog app', function() {
     })
   })
 
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: "corrupted", password: "ashbringer" })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('New blog').click()
+      cy.get('#title').type('How to create blogs with Cypress')
+      cy.get('#author').type('Deemus')
+      cy.get('#url').type('www.cypressblogs.com')
+      cy.get('#add-button').click()
+      cy.contains('How to create blogs with Cypress')
+    })
+  })
+
 })

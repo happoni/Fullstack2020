@@ -43,6 +43,8 @@ describe('Blog app', function() {
     beforeEach(function() {
       cy.login({ username: "corrupted", password: "ashbringer" })
       cy.createBlog({ title: "Automated blog creating", author: "A. U. Tomat", url: "www.automat.ed"})
+      cy.createBlog({ title: "Not so fun stuff", author: "Boring Panda", url: "www.meh.de"})
+      cy.createBlog({ title: "Most hyped blogs", author: "Coolio", url: "www.bestblogs.eu"})
     })
 
     it('A blog can be created', function() {
@@ -77,6 +79,23 @@ describe('Blog app', function() {
       cy.contains('Blog was deleted')
       cy.get('html').should('not.contain', 'Automated blog creating')
     })
-  })
 
+    /*
+    it('Blogs shall be ordered by likes', function() {
+      // Annetaan muutamat tykkäykset
+      cy.contains('Most hyped blogs')
+      .get('#show-button')
+      .click()
+      .get('#like-button')
+      .click()  
+      .click()
+      
+      cy.contains('Automated blog creating')
+      .get('#show-button')
+      .click()
+      .get('#like-button')
+      .click()
+    })
+    */
+  })
 })

@@ -26,14 +26,14 @@ const Blog = ({ blog, user, handleRemove, handleLike }) => {
 
   if (minimized) {
     return (
-      <div style={blogStyle}>
+      <div id="blog-div" style={blogStyle}>
         {blog.title} - {blog.author}
         <button id='show-button' onClick={() => toggleMinimize()}>Show</button>
       </div>
     )
   } else {
     return (
-      <div style={blogStyle}>
+      <div id="blog-div" style={blogStyle}>
         {blog.title} - {blog.author}
         <button onClick={() => toggleMinimize()}>Hide</button>
         <br></br>

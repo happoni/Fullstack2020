@@ -80,22 +80,25 @@ describe('Blog app', function() {
       cy.get('html').should('not.contain', 'Automated blog creating')
     })
 
-    /*
-    it('Blogs shall be ordered by likes', function() {
+    
+    it.only('Blogs shall be ordered by likes', function() {
       // Annetaan muutamat tykkäykset
-      cy.contains('Most hyped blogs')
-      .get('#show-button')
-      .click()
-      .get('#like-button')
-      .click()  
-      .click()
+      cy.contains('Coolio').find('#show-button').click()  
+      cy.contains('Coolio').find('#like-button').click()
+      cy.wait(1000)
+      cy.contains('A. U. Tomat').find('#show-button').click() 
+      cy.contains('A. U. Tomat').find('#like-button').click()
+      cy.wait(1000)
+      cy.contains('Coolio').find('#like-button').click()
+      cy.wait(1000)
       
-      cy.contains('Automated blog creating')
-      .get('#show-button')
-      .click()
-      .get('#like-button')
-      .click()
+      // hae kaikki blogit ja tutki niiden järkkää...
+      cy.get('[id="blog-div"]').then( blogs => {
+        console.log('amount of blogs', blogs.length)
+        cy.wrap(blogs[0]).should('contain', 'Coolio')
+        cy.wrap(blogs[1]).should('contain', 'A. U. Tomat')
+        cy.wrap(blogs[2]).should('contain', 'Boring Panda')
+      })
     })
-    */
   })
 })

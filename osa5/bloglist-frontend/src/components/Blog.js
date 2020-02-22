@@ -28,7 +28,7 @@ const Blog = ({ blog, user, handleRemove, handleLike }) => {
     return (
       <div style={blogStyle}>
         {blog.title} - {blog.author}
-        <button onClick={() => toggleMinimize()}>Show</button>
+        <button id='show-button' onClick={() => toggleMinimize()}>Show</button>
       </div>
     )
   } else {
@@ -39,7 +39,7 @@ const Blog = ({ blog, user, handleRemove, handleLike }) => {
         <br></br>
         {blog.url}
         <br></br>
-            Likes: {blog.likes} <button onClick={() => addLike()}>Like</button>
+            Likes: {blog.likes} <button id="like-button" onClick={() => addLike()}>Like</button>
         <br></br>
             User: {blog.user.name}
         <br></br>

@@ -42,6 +42,7 @@ describe('Blog app', function() {
   describe('When logged in', function() {
     beforeEach(function() {
       cy.login({ username: "corrupted", password: "ashbringer" })
+      cy.createBlog({ title: "Automated blog creating", author: "A. U. Tomat", url: "www.automat.ed"})
     })
 
     it('A blog can be created', function() {
@@ -51,6 +52,17 @@ describe('Blog app', function() {
       cy.get('#url').type('www.cypressblogs.com')
       cy.get('#add-button').click()
       cy.contains('How to create blogs with Cypress')
+    })
+
+    it('A blog can be liked', function() {
+      cy.contains('Automated blog creating')
+        .get('#show-button')
+        .click()
+        .get('#like-button')
+        .click()        
+        
+      cy.contains('Automated blog creating')
+        .contains('Likes: 1')        
     })
   })
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, user, handleRemove }) => {
+const Blog = ({ blog, user, handleRemove, handleLike }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -12,17 +11,13 @@ const Blog = ({ blog, user, handleRemove }) => {
   }
 
   const [minimized, setMinimized] = useState(true)
-  const [likes, setLikes] = useState(blog.likes)
-
 
   const toggleMinimize = () => {
     setMinimized(!minimized)
   }
 
   const addLike = () => {
-    blog.likes = blog.likes + 1
-    blogService.update(blog.id, blog)
-    setLikes(blog.likes)
+    handleLike({ blog })
   }
 
   const removeBlog = () => {
@@ -44,7 +39,7 @@ const Blog = ({ blog, user, handleRemove }) => {
         <br></br>
         {blog.url}
         <br></br>
-            Likes: {likes} <button onClick={() => addLike()}>Like</button>
+            Likes: {blog.likes} <button onClick={() => addLike()}>Like</button>
         <br></br>
             User: {blog.user.name}
         <br></br>
@@ -60,7 +55,8 @@ const Blog = ({ blog, user, handleRemove }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  //handleRemove: PropTypes.func.isRequired
+  handleRemove: PropTypes.func.isRequired,
+  handleLike: PropTypes.func.isRequired
 }
 
 export default Blog

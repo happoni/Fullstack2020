@@ -71,6 +71,33 @@ const App = () => {
     }, 5000)
   }
 
+  const handleLike = async ({ blog }) => {
+    try {  
+      const id = blog.id
+      const newLikes = (blog.likes + 1)
+
+      const updatedBlog = {
+        user: id,
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        likes: newLikes
+      }
+
+      await blogService.update(id, updatedBlog)
+      setBlogs(await blogService.getAll())
+      setInfoMessage(`Like added to blog ${blog.title}`)
+      setTimeout(() => {
+        setInfoMessage(null)
+      }, 5000)
+    } catch (error) {
+      setErrorMessage(error.message)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleRemove = async ({ blog }) => {
     if (window.confirm(`Really delete blog ${blog.title}?`)) {
       await blogService.remove(blog.id)
@@ -153,7 +180,7 @@ const App = () => {
       {blogs.sort((a, b) => {
         return b.likes - a.likes
       }).map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} handleRemove={handleRemove} />
+        <Blog key={blog.id} blog={blog} user={user} handleRemove={handleRemove} handleLike={handleLike} />
       )}
       {blogForm()}
     </div>

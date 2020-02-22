@@ -4,82 +4,78 @@ import { render, fireEvent } from '@testing-library/react'
 import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 
-test('renders title and author', () => {
-  const user = {
-    username: 'testaaja',
-    name: 'Kokeilija',
-    password: 'salainen'
-  }
-  
-  const blog = {
-    title: 'Blogini',
-    author: 'Blogisti',
-    url: 'blogi.com',
-    likes: 5
-  }
+describe('<Blog />', () => {
+  let component
+  const mockHandler = jest.fn()
+  const mockRemoveHandler = jest.fn()
 
-  const component = render(
-    <Blog blog={blog} user={user} />
-  )
-
-  expect(component.container).toHaveTextContent(
-    'Blogini'
-  )
-
-  expect(component.container).toHaveTextContent(
-    'Blogisti'
-  )
-
-  expect(component.container).not.toHaveTextContent(
-    'blogi.com'
-  )
-
-  expect(component.container).not.toHaveTextContent(
-    'Likes'
-  )
-})
-
-test('clicking show-button reveals url and likes', () => {
-  const user = {
-    username: 'testaaja',
-    name: 'Lashu',
-    password: 'salainen'
-  }
-  
-  const blog = {
-    title: 'Blogini',
-    author: 'Blogisti',
-    url: 'blogi.com',
-    likes: 5,
-    user: {
+  beforeEach(() => {
+    const user = {
       username: 'testaaja',
       name: 'Lashu',
       password: 'salainen'
     }
-  }
+    
+    const blog = {
+      title: 'Blogini',
+      author: 'Blogisti',
+      url: 'blogi.com',
+      likes: 5,
+      user: {user}
+    }
 
-  const mockHandler = jest.fn()
+    component = render(
+      <Blog blog={blog} user={user} handleRemove={mockRemoveHandler} handleLike={mockHandler} />
+    )
+  })
 
-  const component = render(
-    <Blog blog={blog} user={user} toggleMinimize={mockHandler} />
-  )
+  test('renders title and author', () => {
+    expect(component.container).toHaveTextContent(
+      'Blogini'
+    )
 
-  const button = component.getByText('Show')
-  fireEvent.click(button)
+    expect(component.container).toHaveTextContent(
+      'Blogisti'
+    )
 
-  expect(component.container).toHaveTextContent(
-    'Blogini'
-  )
+    expect(component.container).not.toHaveTextContent(
+      'blogi.com'
+    )
 
-  expect(component.container).toHaveTextContent(
-    'Blogisti'
-  )
+    expect(component.container).not.toHaveTextContent(
+      'Likes'
+    )
+  })
 
-  expect(component.container).toHaveTextContent(
-    'blogi.com'
-  )
+  test('clicking show-button reveals url and likes', () => {
+    const button = component.getByText('Show')
+    fireEvent.click(button)
 
-  expect(component.container).toHaveTextContent(
-    'Likes'
-  )
+    expect(component.container).toHaveTextContent(
+      'Blogini'
+   )
+
+    expect(component.container).toHaveTextContent(
+      'Blogisti'
+   )
+
+    expect(component.container).toHaveTextContent(
+      'blogi.com'
+    )
+
+    expect(component.container).toHaveTextContent(
+      'Likes'
+    )
+  })
+
+  test('clicking like two times calls event handler twice', () => {
+    const showButton = component.getByText('Show')
+    fireEvent.click(showButton)
+
+    const likeButton = component.getByText('Like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(mockHandler.mock.calls.length).toBe(2)
+  })
 })

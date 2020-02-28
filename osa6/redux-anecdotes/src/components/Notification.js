@@ -21,6 +21,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-const ConnectedNotification = connect(mapStateToProps)(Notification)
+const mapDispatchToProps = null
+
+const ConnectedNotification = connect(mapStateToProps, mapDispatchToProps)(Notification)
 
 export default ConnectedNotification

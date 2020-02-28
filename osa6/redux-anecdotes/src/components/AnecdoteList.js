@@ -5,7 +5,10 @@ import { notificationChange, notificationRemove } from '../reducers/notification
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state.anecdotes)
+  const anecdotes = useSelector(({anecdotes, filter}) => {
+    console.log(filter)
+      return anecdotes.filter(a => a.content.includes(filter))
+  })
 
   const notify = (message) => {
     dispatch(notificationChange(message))

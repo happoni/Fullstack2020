@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/5e466df9a19a0256cec461be
+Content-Type: application/json
+
+{
+  "title": "Eka blogini",
+  "author": "Hanihani",
+  "url": "www.blogit.com",
+  "likes": 99
+  }

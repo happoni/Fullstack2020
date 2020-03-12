@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { connect } from 'react-redux'

@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
 
 const Blog = ({ blog, user, handleRemove, handleLike }) => {
@@ -12,17 +15,33 @@ const Blog = ({ blog, user, handleRemove, handleLike }) => {
 
   const [minimized, setMinimized] = useState(true)
 
+  const dispatch = useDispatch()
+
   const toggleMinimize = () => {
     setMinimized(!minimized)
   }
 
   const addLike = () => {
-    handleLike({ blog })
+    //const toLike = blogs.find(a => a.id === id)
+    //console.log(toLike)
+    dispatch(likeBlog(blog))
+    dispatch(setNotification(`Voted ${blog.title}`, 5))
   }
 
-  const removeBlog = () => {
-    handleRemove({ blog })
+/*  
+  const addLike = () => {
+    handleLike( blog.id )
   }
+*/  
+
+  const remove = () => {
+    //handleRemove({ blog })
+    if (window.confirm(`Really delete blog ${blog.title}?`)) {
+      dispatch(removeBlog(blog))
+      dispatch(setNotification('Blog was removed.', 5))
+    }
+  }
+
 
   if (minimized) {
     return (
@@ -44,7 +63,7 @@ const Blog = ({ blog, user, handleRemove, handleLike }) => {
             User: {blog.user.name}
         <br></br>
         {user.username === blog.user.username ?
-          <button id="remove-button" onClick={() => removeBlog()}>Remove</button>
+          <button id="remove-button" onClick={() => remove()}>Remove</button>
           : <p></p>}
 
       </div>
@@ -55,8 +74,8 @@ const Blog = ({ blog, user, handleRemove, handleLike }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  handleRemove: PropTypes.func.isRequired,
-  handleLike: PropTypes.func.isRequired
+  //handleRemove: PropTypes.func.isRequired,
+  //handleLike: PropTypes.func.isRequired
 }
 
 export default Blog

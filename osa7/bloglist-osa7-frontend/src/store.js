@@ -6,7 +6,7 @@ import blogReducer from './reducers/blogReducer'
 
 const reducer = combineReducers({
   notification: notificationReducer,
-  blog: blogReducer,
+  blogs: blogReducer,
 })
 
 export default createStore(reducer, composeWithDevTools(

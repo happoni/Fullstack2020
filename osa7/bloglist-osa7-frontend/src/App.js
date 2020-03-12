@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
-import Blog from './components/Blog'
+//import Blog from './components/Blog'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
+import BlogList from './components/BlogList'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+
 import { initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  //const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -19,9 +21,11 @@ const App = () => {
   const blogFormRef = React.createRef()
 
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
-  
-
+/*
   useEffect(() => {
     blogService
       .getAll()
@@ -29,6 +33,7 @@ const App = () => {
         setBlogs(initialBlogs)
       })
   }, [])
+*/
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -67,6 +72,7 @@ const App = () => {
     dispatch(setNotification('Logged out succesfully', 5))
   }
 
+/*
   const handleLike = async ({ blog }) => {
     try {  
       const id = blog.id
@@ -108,6 +114,7 @@ const App = () => {
         dispatch(setNotification(error.response.data.error, 5))
       })
   }
+*/
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -135,11 +142,13 @@ const App = () => {
     </form>
   )
 
+/*  
   const blogForm = () => (
     <Togglable buttonLabel='New blog' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />
+      <BlogForm />
     </Togglable>
   )
+*/ 
 
   if (user === null) {
     return (
@@ -152,6 +161,24 @@ const App = () => {
     )
   }
 
+  return (
+    <div>
+      <h2>Blogs</h2>
+      <Notification />
+      <div>
+        <p>{user.name} logged in</p>
+        <button onClick={handleLogout}>
+            Logout
+        </button>
+      </div>
+      <BlogList />
+      <Togglable buttonLabel='New blog' ref={blogFormRef}>
+        <BlogForm />
+      </Togglable>
+    </div>
+  )
+
+  /*
   return (
     <div>
       <h2>Blogs</h2>
@@ -170,6 +197,7 @@ const App = () => {
       {blogForm()}
     </div>
   )
+  */
 }
 
 export default App

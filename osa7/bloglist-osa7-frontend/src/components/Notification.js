@@ -20,5 +20,5 @@ const Notification = ({ notification }) => {
 }
 
 export default connect (
-  (state) => ({ mnotification: state.notification })
+  (state) => ({ notification: state.notification })
 )(Notification)

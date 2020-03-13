@@ -4,7 +4,7 @@ import { likeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import Blog from './Blog'
 
-const BlogList = () => {
+const BlogList = (user) => {
   const blogs = useSelector(state => {
     return state.blogs
   })
@@ -18,10 +18,12 @@ const BlogList = () => {
     dispatch(setNotification(`Voted '${toLike.title}'`, 5))
   }
 
+//  console.log(user)
+
   return (
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={blog.user} />
+        <Blog key={blog.id} blog={blog} user={user} />
       )}
     </div>
   )

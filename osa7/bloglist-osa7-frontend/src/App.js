@@ -171,7 +171,7 @@ const App = () => {
             Logout
         </button>
       </div>
-      <BlogList />
+      <BlogList user={user} />
       <Togglable buttonLabel='New blog' ref={blogFormRef}>
         <BlogForm />
       </Togglable>

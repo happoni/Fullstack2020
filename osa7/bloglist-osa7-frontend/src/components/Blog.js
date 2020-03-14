@@ -5,7 +5,7 @@ import { setNotification } from '../reducers/notificationReducer'
 import { getUsers } from '../reducers/usersReducer'
 import { useRouteMatch } from 'react-router-dom'
 
-const Blog = () => {
+const Blog = (loggedUser) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -47,7 +47,9 @@ const Blog = () => {
         <p>Likes: {blog.likes}</p><button id="like-button" onClick={() => addLike()}>Like</button>
         <p>User: {blog.user.name}</p>
         <br></br>
+        {loggedUser.loggeduser.username === blog.user.username ?
           <button id="remove-button" onClick={() => remove()}>Remove</button>
+          : <p></p>}
       </div>
     )
   }

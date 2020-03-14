@@ -37,7 +37,7 @@ const App = () => {
     dispatch(initializeBlogs())
     dispatch(getUsers())
   }, [dispatch])
-
+  
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -46,6 +46,12 @@ const App = () => {
       blogService.setToken(loggedUser.token)
     }
   }, [])
+
+  /*
+  const loggedUser = useSelector(state => {
+    return state.loggedUser
+  })
+*/
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -114,13 +120,13 @@ const App = () => {
 
   return (
     <div>
-      <Menu />
+      <Menu loggedUser={loggedUser} handleLogout={handleLogout} />
       <h2>Bloglist app</h2>
       <Notification />
       
       <Switch>
         <Route path='/blogs/:id'>
-          <Blog />
+          <Blog loggeduser={loggedUser} />
         </Route>
         <Route path='/users/:id'>
           <User />

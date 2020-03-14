@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import PropTypes from 'prop-types'
+import { getUsers } from '../reducers/usersReducer'
+import { useRouteMatch } from 'react-router-dom'
 
-const Blog = ({ blog, user, handleRemove, handleLike }) => {
+const Blog = () => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -13,69 +14,42 @@ const Blog = ({ blog, user, handleRemove, handleLike }) => {
     marginBottom: 5
   }
 
-  const [minimized, setMinimized] = useState(true)
+  const blogs = useSelector(state => {
+    return state.blogs
+  })
+
+  const match = useRouteMatch('/blogs/:id')
+  const blog = blogs.find(b => b.id === match.params.id)
 
   const dispatch = useDispatch()
 
-  const toggleMinimize = () => {
-    setMinimized(!minimized)
-  }
-
-  const addLike = () => {
-    //const toLike = blogs.find(a => a.id === id)
-    //console.log(toLike)
+  const addLike = async () => {
     dispatch(likeBlog(blog))
-    dispatch(setNotification(`Voted ${blog.title}`, 5))
+    dispatch(setNotification(`Liked '${blog.title}'`, 5))
   }
-
-/*  
-  const addLike = () => {
-    handleLike( blog.id )
-  }
-*/  
-
-  const remove = () => {
-    //handleRemove({ blog })
+  
+  const remove = async () => {
     if (window.confirm(`Really delete blog ${blog.title}?`)) {
       dispatch(removeBlog(blog))
-      dispatch(setNotification('Blog was removed.', 5))
+      dispatch(setNotification(`Blog '${blog.title}' was removed.`, 5))
     }
   }
 
+    if (!blog) {
+      return null
+    }
 
-  if (minimized) {
     return (
       <div id="blog-div" style={blogStyle}>
-        {blog.title} - {blog.author}
-        <button id='show-button' onClick={() => toggleMinimize()}>Show</button>
-      </div>
-    )
-  } else {
-    return (
-      <div id="blog-div" style={blogStyle}>
-        {blog.title} - {blog.author}
-        <button onClick={() => toggleMinimize()}>Hide</button>
+        <h3>{blog.title}</h3>
+        <p>Author: {blog.author}</p>
+        <p>Url: {blog.url}</p>
+        <p>Likes: {blog.likes}</p><button id="like-button" onClick={() => addLike()}>Like</button>
+        <p>User: {blog.user.name}</p>
         <br></br>
-        {blog.url}
-        <br></br>
-            Likes: {blog.likes} <button id="like-button" onClick={() => addLike()}>Like</button>
-        <br></br>
-            User: {blog.user.name}
-        <br></br>
-        {user.user.username === blog.user.username ?
           <button id="remove-button" onClick={() => remove()}>Remove</button>
-          : <p></p>}
-
       </div>
     )
   }
-}
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  //handleRemove: PropTypes.func.isRequired,
-  //handleLike: PropTypes.func.isRequired
-}
 
 export default Blog

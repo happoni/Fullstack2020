@@ -1,10 +1,12 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import { connect } from 'react-redux'
+import { getUsers, updateUser } from '../reducers/usersReducer'
 
-const BlogForm = (props) => {
-  
+const BlogForm = (loggedUser) => {
+  const dispatch = useDispatch()
+
   const create = async (event) => {
     event.preventDefault()
     const title = event.target.title.value
@@ -14,8 +16,9 @@ const BlogForm = (props) => {
     event.target.author.value = ''
     event.target.url.value = ''
     const object = {title: title, author: author, url: url}
-    props.createBlog(object)
-    props.setNotification(`New blog '${title}' added.`, 5)
+    dispatch(createBlog(object))
+    //dispatch(updateUser(loggedUser, object))
+    dispatch(setNotification(`New blog '${title}' added.`, 5))
   }
 
   return (
@@ -52,7 +55,4 @@ const BlogForm = (props) => {
   )
 }
 
-export default connect(
-  null,
-  { createBlog, setNotification }
-)(BlogForm)
+export default BlogForm

@@ -19,26 +19,6 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const removeBlog = (blog) => {
-  return async dispatch => {
-    const data = await blogService.remove(blog.id)
-    dispatch({
-      type: 'REMOVE',
-      data: blog.id
-    })
-  }
-}
-
-export const createBlog = (content) => {
-  return async dispatch => {
-    const data = await blogService.create(content)
-    dispatch({
-      type: 'CREATE',
-      data
-    })
-  }
-}
-
 export const initializeBlogs = () => {
   return async dispatch => {
     const data = await blogService.getAll()
@@ -51,16 +31,32 @@ export const initializeBlogs = () => {
 
 export const likeBlog = (blog) => {
   return async dispatch => {
-    //console.log(blog.user)
     const toLike = {...blog, likes: blog.likes + 1 }
-    //console.log(toLike)
-    const data = await blogService.update(toLike.id, toLike)
-    //console.log(data)
+    await blogService.update(toLike.id, toLike)
     dispatch({
       type: 'LIKE',
       data: toLike
     })
-    //console.log(data)
+  }
+}
+
+export const createBlog = (blog) => {
+  return async dispatch => {
+    const data = await blogService.create(blog)
+    dispatch({
+      type: 'CREATE',
+      data
+    })
+  }
+}
+
+export const removeBlog = (blog) => {
+  return async dispatch => {
+    await blogService.remove(blog.id)
+    dispatch({
+      type: 'REMOVE',
+      data: blog.id
+    })
   }
 }
 

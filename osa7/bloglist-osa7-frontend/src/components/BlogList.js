@@ -1,46 +1,28 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { likeBlog } from '../reducers/blogReducer'
-import { setNotification } from '../reducers/notificationReducer'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Blog from './Blog'
 
-const BlogList = (user) => {
+const BlogList = () => {
   const blogs = useSelector(state => {
     return state.blogs
   })
 
-  const dispatch = useDispatch()
-
-  const like = (id) => {
-    const toLike = blogs.find(a => a.id === id)
-    //console.log(toLike)
-    dispatch(likeBlog(toLike))
-    dispatch(setNotification(`Voted '${toLike.title}'`, 5))
+  if (!blogs) {
+    return null
   }
-
-//  console.log(user)
 
   return (
     <div>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} />
-      )}
+      <h3>Blogs</h3>
+      <ul>
+        {blogs.map(blog => 
+          <li key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </li>)}
+      </ul>
     </div>
   )
 }
-
-/*
-handleRemove={handleRemove}
-
-<div key={blog.id}>
-          <div>
-            {blog.title}            
-          </div>
-          <div>
-            has {blog.likes}
-            <button onClick={() => like(blog.id)}>like</button>
-          </div>
-        </div>
-*/
 
 export default BlogList

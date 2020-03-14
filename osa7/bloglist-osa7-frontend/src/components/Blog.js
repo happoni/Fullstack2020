@@ -2,8 +2,8 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import { getUsers } from '../reducers/usersReducer'
 import { useRouteMatch } from 'react-router-dom'
+import { ListGroup, Button } from 'react-bootstrap'
 
 const Blog = (loggedUser) => {
   const blogStyle = {
@@ -42,14 +42,16 @@ const Blog = (loggedUser) => {
     return (
       <div id="blog-div" style={blogStyle}>
         <h3>{blog.title}</h3>
-        <p>Author: {blog.author}</p>
-        <p>Url: {blog.url}</p>
-        <p>Likes: {blog.likes}</p><button id="like-button" onClick={() => addLike()}>Like</button>
-        <p>User: {blog.user.name}</p>
-        <br></br>
-        {loggedUser.loggeduser.username === blog.user.username ?
-          <button id="remove-button" onClick={() => remove()}>Remove</button>
-          : <p></p>}
+        <ListGroup variant="flush">
+          <ListGroup.Item>Author: {blog.author}</ListGroup.Item>
+          <ListGroup.Item>Url: {blog.url}</ListGroup.Item>
+          <ListGroup.Item>Likes: {blog.likes}</ListGroup.Item>
+          <ListGroup.Item><Button variant="success" id="like-button" onClick={() => addLike()}>Like</Button></ListGroup.Item>
+          <ListGroup.Item>Added by: {blog.user.name}</ListGroup.Item>
+        </ListGroup>
+          {loggedUser.loggeduser.username === blog.user.username ?
+            <Button variant="danger" id="remove-button" onClick={() => remove()}>Remove</Button>
+            : <p></p>}
       </div>
     )
   }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import Blog from './components/Blog'
 import User from './components/User'
@@ -11,16 +11,9 @@ import BlogList from './components/BlogList'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { Form, Button } from 'react-bootstrap'
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-  useRouteMatch,
-  useHistory,
-} from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 
 import { getUsers } from './reducers/usersReducer'
 import { initializeBlogs } from './reducers/blogReducer'
@@ -46,12 +39,6 @@ const App = () => {
       blogService.setToken(loggedUser.token)
     }
   }, [])
-
-  /*
-  const loggedUser = useSelector(state => {
-    return state.loggedUser
-  })
-*/
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -82,34 +69,34 @@ const App = () => {
   }
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          id="username"
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id="password"
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id="login-button" type="submit">login</button>
-    </form>
+    <div>
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>Username:</Form.Label>
+            <Form.Control
+              id="username"
+              type="text"
+              value={username}
+              name="Username"
+              onChange={({ target }) => setUsername(target.value)}>
+            </Form.Control>
+          <Form.Label>Password:</Form.Label>
+            <Form.Control
+              id="password"
+              type="password"
+              value={password}
+              name="Password"
+              onChange={({ target }) => setPassword(target.value)}>
+            </Form.Control>
+          <Button variant="primary" id="login-button" type="submit">Login</Button>
+        </Form.Group>
+      </Form>
+    </div>
   )
 
   if (loggedUser === null) {
     return (
-      <div>
+      <div className="container">
         <h2>Blogs</h2>
         <h3>Please log in</h3>
         <Notification />
@@ -119,11 +106,11 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <Menu loggedUser={loggedUser} handleLogout={handleLogout} />
       <h2>Bloglist app</h2>
       <Notification />
-      
+
       <Switch>
         <Route path='/blogs/:id'>
           <Blog loggeduser={loggedUser} />
@@ -144,15 +131,5 @@ const App = () => {
     </div>
   )
 }
-
-/*
-<div>
-        <p>{user.name} logged in</p>
-        <button onClick={handleLogout}>
-            Logout
-        </button>
-      </div>
-      
-*/
 
 export default App

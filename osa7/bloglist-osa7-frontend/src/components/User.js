@@ -1,7 +1,7 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
-import { getUsers } from '../reducers/usersReducer'
+import { Table } from 'react-bootstrap'
 
 const User = () => {
   const users = useSelector(state => {
@@ -16,13 +16,24 @@ const User = () => {
   }
 
   return (
-    <div>
+    <div>    
       <h3>{user.name}</h3>
-      {user.blogs.map(b =>
-        <li key={b.title}>
-          {b.title}
-        </li>
-      )}
+      <Table bordered>
+        <thead>
+          <tr>
+            <th>Title of blog</th>
+          </tr>
+        </thead>
+        <tbody>
+          {user.blogs.map(b =>
+            <tr key={b.id}>
+              <td>
+                {b.title}
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
     </div>
   )
 }
